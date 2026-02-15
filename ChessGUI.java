@@ -64,7 +64,10 @@ public class ChessGUI extends JFrame {
     }
 
     private void squareClick(int r,int c){
-        if(game.isGameOver()) return;
+        if(game.isGameOver()) {
+            JOptionPane.showMessageDialog(this, "Game is over! Restart to play again.");
+            return;
+        }
 
         String piece=game.getPiece(r,c);
 
@@ -83,6 +86,7 @@ public class ChessGUI extends JFrame {
 
         if(moved){
             updateBoard();
+
             if(game.isGameOver()){
                 whiteTimer.stop();
                 blackTimer.stop();
