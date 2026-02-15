@@ -140,9 +140,7 @@ public class ChessGUI extends JFrame {
 
         for (int r = 0; r < 8; r++)
             for (int c = 0; c < 8; c++)
-                felder[r][c].setBackground(;
-        (r + c) % 2 == 0 ? Color.WHITE : Color.LIGHT_GRAY
-                );
+              felder[r][c].setBackground((r + c) % 2 == 0 ? Color.WHITE : Color.LIGHT_GRAY);
     }
 
     private ImageIcon ladeIcon(String pfad) {
@@ -152,3 +150,4 @@ public class ChessGUI extends JFrame {
         return new ImageIcon(bild);
     }
 }
+
