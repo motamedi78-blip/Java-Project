@@ -1,10 +1,12 @@
 public class TurnManager {
 
-    private String aktuellerZug;
+    private String currentTurn;
 
-    public TurnManager(){ aktuellerZug="weiss"; }
+    public TurnManager() { currentTurn = "white"; }
 
-    public void switchTurn(){ aktuellerZug=aktuellerZug.equals("weiss")?"schwarz":"weiss"; }
-    public String getCurrentTurn(){ return aktuellerZug; }
-    public boolean canMove(String farbe){ return aktuellerZug.equals(farbe); }
+    public void switchTurn() { currentTurn = currentTurn.equals("white") ? "black" : "white"; }
+
+    public String getCurrentTurn() { return currentTurn; }
+
+    public boolean canMove(String color) { return currentTurn.equals(color); }
 }
