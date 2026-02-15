@@ -3,14 +3,14 @@ import java.awt.*;
 
 public class StartMenu extends JFrame {
 
-    public StartMenu() {
-        setTitle("Schach - Start Menu");
-        setSize(300, 200);
+    public StartMenu(){
+        setTitle("Chess - Start Menu");
+        setSize(300,200);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setLayout(new GridLayout(2, 1));
+        setLayout(new GridLayout(2,1));
 
-        JButton startButton = new JButton("Spiel starten");
-        JButton exitButton = new JButton("Beenden");
+        JButton startButton=new JButton("Start Game");
+        JButton exitButton=new JButton("Exit");
 
         startButton.addActionListener(e -> {
             new ChessGUI();
@@ -26,7 +26,7 @@ public class StartMenu extends JFrame {
         setVisible(true);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args){
         new StartMenu();
     }
 }
