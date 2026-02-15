@@ -13,44 +13,19 @@ public class ChessMoveCheck {
         switch (type) {
 
             case "Pawn":
-
                 if (color.equals("white")) {
-
-                    // Move one square forward
-                    if (dx == -1 && dy == 0 && board[zx][zy].equals(""))
-                        return true;
-
-                    // Move two squares forward on first move
+                    if (dx == -1 && dy == 0 && board[zx][zy].equals("")) return true;
                     if (dx == -2 && dy == 0 && sx == 6 &&
-                        board[sx - 1][sy].equals("") &&
-                        board[zx][zy].equals(""))
-                        return true;
-
-                    // Capture diagonally
+                        board[sx-1][sy].equals("") && board[zx][zy].equals("")) return true;
                     if (dx == -1 && Math.abs(dy) == 1 &&
-                        !board[zx][zy].equals("") &&
-                        !board[zx][zy].startsWith(color))
-                        return true;
-
-                } else { // black pawn
-
-                    // Move one square forward
-                    if (dx == 1 && dy == 0 && board[zx][zy].equals(""))
-                        return true;
-
-                    // Move two squares forward on first move
+                        !board[zx][zy].equals("") && !board[zx][zy].startsWith(color)) return true;
+                } else {
+                    if (dx == 1 && dy == 0 && board[zx][zy].equals("")) return true;
                     if (dx == 2 && dy == 0 && sx == 1 &&
-                        board[sx + 1][sy].equals("") &&
-                        board[zx][zy].equals(""))
-                        return true;
-
-                    // Capture diagonally
+                        board[sx+1][sy].equals("") && board[zx][zy].equals("")) return true;
                     if (dx == 1 && Math.abs(dy) == 1 &&
-                        !board[zx][zy].equals("") &&
-                        !board[zx][zy].startsWith(color))
-                        return true;
+                        !board[zx][zy].equals("") && !board[zx][zy].startsWith(color)) return true;
                 }
-
                 return false;
 
             case "Rook":
@@ -77,13 +52,9 @@ public class ChessMoveCheck {
         }
     }
 
-    private static boolean isPathClear(int sx, int sy,
-                                       int zx, int zy,
-                                       String[][] board) {
-
+    private static boolean isPathClear(int sx, int sy, int zx, int zy, String[][] board) {
         int dx = Integer.signum(zx - sx);
         int dy = Integer.signum(zy - sy);
-
         int x = sx + dx;
         int y = sy + dy;
 
@@ -92,7 +63,6 @@ public class ChessMoveCheck {
             x += dx;
             y += dy;
         }
-
         return true;
     }
 }
