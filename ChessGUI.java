@@ -13,13 +13,26 @@ public class ChessGUI extends JFrame {
 
     public ChessGUI() {
         setTitle("Chess");
-        setSize(600,650);
+        setSize(600,700);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        JPanel top = new JPanel(new GridLayout(1,2));
+        JPanel top = new JPanel(new GridLayout(1,3));
         top.add(whiteLabel);
         top.add(blackLabel);
+
+        JButton restartButton = new JButton("Restart");
+        restartButton.addActionListener(e -> {
+            game.resetGame();
+            whiteTimer.stop();
+            blackTimer.stop();
+            whiteTimer = new ChessTimer(300, whiteLabel);
+            blackTimer = new ChessTimer(300, blackLabel);
+            whiteTimer.start();
+            updateBoard();
+        });
+
+        top.add(restartButton);
         add(top,BorderLayout.NORTH);
 
         JPanel boardPanel = new JPanel(new GridLayout(8,8));
@@ -51,6 +64,8 @@ public class ChessGUI extends JFrame {
     }
 
     private void squareClick(int r,int c){
+        if(game.isGameOver()) return;
+
         String piece=game.getPiece(r,c);
 
         if(selected==null){
@@ -68,6 +83,12 @@ public class ChessGUI extends JFrame {
 
         if(moved){
             updateBoard();
+            if(game.isGameOver()){
+                whiteTimer.stop();
+                blackTimer.stop();
+                return;
+            }
+
             if(game.getCurrentTurn().equals("white")){
                 blackTimer.stop();
                 whiteTimer.start();
