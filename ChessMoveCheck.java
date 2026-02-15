@@ -1,76 +1,75 @@
 public class ChessMoveCheck {
 
-    public static boolean checkMove(String typ, String farbe,
+    public static boolean checkMove(String type, String color,
                                     int sx, int sy,
                                     int zx, int zy,
-                                    String[][] brett) {
+                                    String[][] board) {
 
         int dx = zx - sx;
         int dy = zy - sy;
         int absDx = Math.abs(dx);
         int absDy = Math.abs(dy);
 
-        switch (typ) {
+        switch (type) {
 
-            case "Bauer":
+            case "Pawn":
 
-                if (farbe.equals("weiss")) {
+                if (color.equals("white")) {
 
                     // Move one square forward
-                    if (dx == 0 && dy == -1 && brett[zx][zy].equals(""))
+                    if (dx == -1 && dy == 0 && board[zx][zy].equals(""))
                         return true;
 
                     // Move two squares forward on first move
-                    if (dx == 0 && dy == -2 && sy == 6 &&
-                        brett[sx][sy - 1].equals("") &&
-                        brett[zx][zy].equals(""))
+                    if (dx == -2 && dy == 0 && sx == 6 &&
+                        board[sx - 1][sy].equals("") &&
+                        board[zx][zy].equals(""))
                         return true;
 
                     // Capture diagonally
-                    if (absDx == 1 && dy == -1 &&
-                        !brett[zx][zy].equals("") &&
-                        !brett[zx][zy].startsWith(farbe))
+                    if (dx == -1 && Math.abs(dy) == 1 &&
+                        !board[zx][zy].equals("") &&
+                        !board[zx][zy].startsWith(color))
                         return true;
 
                 } else { // black pawn
 
                     // Move one square forward
-                    if (dx == 0 && dy == 1 && brett[zx][zy].equals(""))
+                    if (dx == 1 && dy == 0 && board[zx][zy].equals(""))
                         return true;
 
                     // Move two squares forward on first move
-                    if (dx == 0 && dy == 2 && sy == 1 &&
-                        brett[sx][sy + 1].equals("") &&
-                        brett[zx][zy].equals(""))
+                    if (dx == 2 && dy == 0 && sx == 1 &&
+                        board[sx + 1][sy].equals("") &&
+                        board[zx][zy].equals(""))
                         return true;
 
                     // Capture diagonally
-                    if (absDx == 1 && dy == 1 &&
-                        !brett[zx][zy].equals("") &&
-                        !brett[zx][zy].startsWith(farbe))
+                    if (dx == 1 && Math.abs(dy) == 1 &&
+                        !board[zx][zy].equals("") &&
+                        !board[zx][zy].startsWith(color))
                         return true;
                 }
 
                 return false;
 
-            case "Turm":
+            case "Rook":
                 if (dx != 0 && dy != 0) return false;
-                return istPfadFrei(sx, sy, zx, zy, brett);
+                return isPathClear(sx, sy, zx, zy, board);
 
-            case "Laeufer":
+            case "Bishop":
                 if (absDx != absDy) return false;
-                return istPfadFrei(sx, sy, zx, zy, brett);
+                return isPathClear(sx, sy, zx, zy, board);
 
-            case "Dame":
+            case "Queen":
                 if (dx == 0 || dy == 0 || absDx == absDy)
-                    return istPfadFrei(sx, sy, zx, zy, brett);
+                    return isPathClear(sx, sy, zx, zy, board);
                 return false;
 
-            case "Springer":
-                return (absDx == 2 && absDy == 1) ||
-                       (absDx == 1 && absDy == 2);
+            case "Knight":
+                return (absDx == 2 && absDy == 1) || (absDx == 1 && absDy == 2);
 
-            case "Koenig":
+            case "King":
                 return absDx <= 1 && absDy <= 1;
 
             default:
@@ -78,9 +77,9 @@ public class ChessMoveCheck {
         }
     }
 
-    private static boolean istPfadFrei(int sx, int sy,
+    private static boolean isPathClear(int sx, int sy,
                                        int zx, int zy,
-                                       String[][] brett) {
+                                       String[][] board) {
 
         int dx = Integer.signum(zx - sx);
         int dy = Integer.signum(zy - sy);
@@ -89,7 +88,7 @@ public class ChessMoveCheck {
         int y = sy + dy;
 
         while (x != zx || y != zy) {
-            if (!brett[x][y].equals("")) return false;
+            if (!board[x][y].equals("")) return false;
             x += dx;
             y += dy;
         }
