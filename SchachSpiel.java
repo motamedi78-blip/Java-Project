@@ -1,9 +1,18 @@
+import javax.swing.*;
+
 public class SchachSpiel {
 
     private String[][] board = new String[8][8];
     private TurnManager turnManager = new TurnManager();
+    private boolean gameOver = false;
 
     public SchachSpiel() { initBoard(); }
+
+    public void resetGame() {
+        initBoard();
+        gameOver = false;
+        turnManager = new TurnManager();
+    }
 
     private void initBoard() {
         for (int r=0;r<8;r++)
@@ -32,6 +41,8 @@ public class SchachSpiel {
     }
 
     public boolean move(int sx,int sy,int zx,int zy) {
+        if(gameOver) return false;
+
         if(board[sx][sy].equals("")) return false;
 
         String piece = board[sx][sy];
@@ -45,13 +56,21 @@ public class SchachSpiel {
         String target = board[zx][zy];
         if(!target.equals("") && target.startsWith(color)) return false;
 
+        // Move piece
         board[zx][zy] = board[sx][sy];
         board[sx][sy] = "";
+
+        // Check if King is captured
+        if(!target.equals("") && target.endsWith("King")){
+            JOptionPane.showMessageDialog(null, target + " captured! Game Over!");
+            gameOver = true;
+        }
 
         turnManager.switchTurn();
         return true;
     }
 
+    public boolean isGameOver() { return gameOver; }
     public String getPiece(int r,int c){ return board[r][c]; }
     public String getCurrentTurn(){ return turnManager.getCurrentTurn(); }
     public String[][] getBoard(){ return board; }
