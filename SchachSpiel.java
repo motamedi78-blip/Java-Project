@@ -1,58 +1,58 @@
 public class SchachSpiel {
 
-    private String[][] brett = new String[8][8];
-    private TurnManager zugManager = new TurnManager();
+    private String[][] board = new String[8][8];
+    private TurnManager turnManager = new TurnManager();
 
-    public SchachSpiel() { initBrett(); }
+    public SchachSpiel() { initBoard(); }
 
-    private void initBrett() {
-        for (int r=0;r<8;r++) for (int c=0;c<8;c++) brett[r][c]="";
+    private void initBoard() {
+        for (int r=0;r<8;r++)
+            for (int c=0;c<8;c++)
+                board[r][c]="";
 
-        for (int c=0;c<8;c++) {
-            brett[1][c]="schwarz_Bauer";
-            brett[6][c]="weiss_Bauer";
+        for (int c=0;c<8;c++){
+            board[1][c]="black_Pawn";
+            board[6][c]="white_Pawn";
         }
 
-        brett[0][0]=brett[0][7]="schwarz_Turm";
-        brett[7][0]=brett[7][7]="weiss_Turm";
+        board[0][0]=board[0][7]="black_Rook";
+        board[7][0]=board[7][7]="white_Rook";
 
-        brett[0][1]=brett[0][6]="schwarz_Springer";
-        brett[7][1]=brett[7][6]="weiss_Springer";
+        board[0][1]=board[0][6]="black_Knight";
+        board[7][1]=board[7][6]="white_Knight";
 
-        brett[0][2]=brett[0][5]="schwarz_Laeufer";
-        brett[7][2]=brett[7][5]="weiss_Laeufer";
+        board[0][2]=board[0][5]="black_Bishop";
+        board[7][2]=board[7][5]="white_Bishop";
 
-        brett[0][3]="schwarz_Dame";
-        brett[7][3]="weiss_Dame";
+        board[0][3]="black_Queen";
+        board[7][3]="white_Queen";
 
-        brett[0][4]="schwarz_Koenig";
-        brett[7][4]="weiss_Koenig";
+        board[0][4]="black_King";
+        board[7][4]="white_King";
     }
 
-    public boolean move(int sx,int sy,int zx,int zy){
+    public boolean move(int sx,int sy,int zx,int zy) {
+        if(board[sx][sy].equals("")) return false;
 
-        if(brett[sx][sy].equals("")) return false;
+        String piece = board[sx][sy];
+        String[] parts = piece.split("_");
+        String color = parts[0];
+        String type = parts[1];
 
-        String figur=brett[sx][sy];
-        String[] teile=figur.split("_");
-        String farbe=teile[0];
-        String typ=teile[1];
+        if(!turnManager.canMove(color)) return false;
+        if(!ChessMoveCheck.checkMove(type,color,sx,sy,zx,zy,board)) return false;
 
-        if(!zugManager.canMove(farbe)) return false;
+        String target = board[zx][zy];
+        if(!target.equals("") && target.startsWith(color)) return false;
 
-        if(!ChessMoveCheck.checkMove(typ,farbe,sx,sy,zx,zy,brett)) return false;
+        board[zx][zy] = board[sx][sy];
+        board[sx][sy] = "";
 
-        String ziel=brett[zx][zy];
-        if(!ziel.equals("") && ziel.startsWith(farbe)) return false;
-
-        brett[zx][zy]=brett[sx][sy];
-        brett[sx][sy]="";
-
-        zugManager.switchTurn();
+        turnManager.switchTurn();
         return true;
     }
 
-    public String getPiece(int r,int c){ return brett[r][c]; }
-    public String getCurrentTurn(){ return zugManager.getCurrentTurn(); }
-    public String[][] getBoard(){ return brett; }
+    public String getPiece(int r,int c){ return board[r][c]; }
+    public String getCurrentTurn(){ return turnManager.getCurrentTurn(); }
+    public String[][] getBoard(){ return board; }
 }
